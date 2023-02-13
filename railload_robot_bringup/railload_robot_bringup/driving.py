@@ -17,7 +17,11 @@ class Driving(Node):
         self.odom_publisher = self.create_publisher(
             Odometry,
             '/odom',
+<<<<<<< HEAD
             10)
+=======
+            qos_profile)
+>>>>>>> a413026ad382fa8a5b6821dc791ce38d75aa61bd
 
         self.odom_publisher
         
@@ -25,7 +29,11 @@ class Driving(Node):
         self.cmd_vel_publisher = self.create_publisher(
             Twist,
             '/cmd_vel',
+<<<<<<< HEAD
             10)
+=======
+            qos_profile)
+>>>>>>> a413026ad382fa8a5b6821dc791ce38d75aa61bd
             
         self.cmd_vel_publisher
 
