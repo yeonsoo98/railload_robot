@@ -10,6 +10,7 @@ from rclpy.qos import QoSProfile
 
 import minimalmodbus as minimalmodbus
 import serial
+import time
 
 ADDRESS = 1
 
@@ -23,17 +24,6 @@ RPM_P1000 = [0x01, 0x06, 0x00, 0x79, 0x03, 0xE8, 0x58, 0xAD]
 RPM_0 =     [0x01, 0x06, 0x00, 0x79, 0x00, 0x00, 0x58, 0x13]
 RPM_N1000 = [0x01, 0x06, 0x00, 0x79, 0xFC, 0x18, 0x19, 0x19]
 
-#Crc16Table[256] = [0x0000,]
-### CRC 
-    # def uiCRC16('buf',len):
-    #     CRC = 0xFFFF
-    #     for i range(len):
-    #         tmp = CRC ^(0x00ff & buf[i])
-    #         CRC = (CRC>>8) ^ Crc16Table[tmp & 0xff]
-
-    #     return CRC
-            
-
 class Driving(Node):
     def __init__(self):
         super().__init__("driving_node")
@@ -46,13 +36,16 @@ class Driving(Node):
         self.instrument.serial.parity = serial.PARITY_NONE
         self.instrument.clear_buffers_before_each_transaction = True
         self.instrument.serial.stopbits = 1
-        self.instrument.serial.timeout = 3  # seconds
+        self.instrument.serial.timeout = 0.05 # seconds
         self.instrument.mode = minimalmodbus.MODE_RTU  # rtu or ascii mode
 
         try:
             self.instrument.serial.write(bytes(COM_MODE))
+            time.sleep(0.1)
             self.instrument.serial.write(bytes(SERVO_ON))
+            time.sleep(0.1)
             self.instrument.serial.write(bytes(BREAK_OFF))
+            time.sleep(0.1)
             self.instrument.serial.write(bytes(RPM_0))
         except Exception as e:
             self.get_logger().error("Fail to initialize : {}".format(e))
@@ -72,7 +65,7 @@ class Driving(Node):
         self.cur_rpm_publisher = self.create_publisher(Int32, 'cur_rpm', qos_profile)
 
         # timer
-        timer_period= 0.2 # seconds
+        timer_period= 1.0 # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
         self.get_logger().info("init driving node ! ")
@@ -80,15 +73,18 @@ class Driving(Node):
 
     # info timer
     def timer_callback(self):
-        # publish current rpm
-        cur_rpm = Int32()
-        cur_rpm.data = self.instrument.read_register(registeraddress=0x03, number_of_decimals=0, functioncode=4, signed=False)
-        self.cur_rpm_publisher.publish(cur_rpm)
+        try:
+            # publish current rpm
+            cur_rpm = Int32()
+            cur_rpm.data = self.instrument.read_register(registeraddress=0x03, number_of_decimals=0, functioncode=4, signed=False)
+            self.cur_rpm_publisher.publish(cur_rpm)
 
-        # publish required rpm
-        req_rpm = Int32()
-        req_rpm.data = self.instrument.read_register(registeraddress=0x02, number_of_decimals=0, functioncode=4, signed=False)
-        self.req_rpm_publisher.publish(req_rpm)
+            # publish required rpm
+            req_rpm = Int32()
+            req_rpm.data = self.instrument.read_register(registeraddress=0x02, number_of_decimals=0, functioncode=4, signed=False)
+            self.req_rpm_publisher.publish(req_rpm)
+        except Exception as e:
+            self.get_logger().error("Fail to read : {}".format(e))
 
     # robot cmd_vel callback
     def cmd_vel_callback(self, msg):
