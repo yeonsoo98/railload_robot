@@ -111,7 +111,20 @@ class Driving(Node):
                 self.instrument.serial.write(bytes(RPM_0))
         except Exception as e:
             self.get_logger().error("Fail to write : {}".format(e))
-
+            
+    # keyboard_motor_control
+    def keyboard_motor_control(self):
+        if self.key =='q':
+            self.set_rpm(RPM_0300)
+        elif self.key -- 'w':
+            self.set_rpm(RPM_0300)
+        elif self.key == 'e':
+            self.set_rpm(RPM_P0700)                        
+        elif self.key == 'r':
+            self.set_rpm(RPM_P1000)
+        else :
+            self.stop_motor(RPM_0)            
+            
 def main(args=None):
     rclpy.init(args=args)
     driving = Driving()
