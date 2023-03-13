@@ -117,7 +117,7 @@ class Driving(Node):
         if self.key =='q':
             self.set_rpm(RPM_0300)
         elif self.key -- 'w':
-            self.set_rpm(RPM_0300)
+            self.set_rpm(RPM_0500)
         elif self.key == 'e':
             self.set_rpm(RPM_P0700)                        
         elif self.key == 'r':
