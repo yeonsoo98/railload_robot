@@ -8,8 +8,7 @@
 * Hardware settings 
 SBC -> Motor Drive (USE RS 485) Modbus Protocol -> Motor 
 
-  * SBC 
-   * Nvidia Jetson Orin
+  * SBC ( Nvidia Jetson Orin )
 ![image](https://user-images.githubusercontent.com/77741178/224618275-10c6d570-fa22-433d-9831-7383f32426c2.png)
 
    * Power Supply Device
