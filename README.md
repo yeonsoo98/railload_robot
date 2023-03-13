@@ -1,8 +1,9 @@
 # Railload Robot
 
 * function
- * driving.py -> motor_protocol & start_node
- * teleop.keyboard -> motor_control
+  * driving.py -> motor_protocol & start_node
+  
+  * teleop.keyboard -> motor_control
 
 * Hardware settings 
 SBC -> Motor Drive (USE RS 485) Modbus Protocol -> Motor 
