@@ -72,7 +72,10 @@ class KeyboardCommand(Node):
 def main(args=None):
     rclpy.init(args=args)
     keyboard_command = KeyboardCommand()
-    rclpy.spin(keyboard_command)
+    try:
+        rclpy.spin(keyboard_command)
+    except KeyboardInterrupt:
+        pass
 
     # Destroy the node explicitly
     keyboard_command.destroy_node()
