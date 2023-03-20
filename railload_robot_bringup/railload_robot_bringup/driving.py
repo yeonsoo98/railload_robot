@@ -5,9 +5,8 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
-from std_msgs.msg import Int32
+from std_msgs.msg import Int32, Int16
 from rclpy.qos import QoSProfile
-
 import minimalmodbus as minimalmodbus
 import serial
 import time
@@ -21,22 +20,21 @@ SERVO_OFF = [0x01, 0x06, 0x00, 0x78, 0x01, 0x00, 0x08, 0x43]
 BREAK_ON =  [0x01, 0x06, 0x00, 0x78, 0x01, 0x01, 0xC9, 0x83]
 BREAK_OFF = [0x01, 0x06, 0x00, 0x78, 0x01, 0x00, 0x08, 0x43]
 
-RPM_P0300 = [0x01, 0x06, 0x00, 0x79, 0x01, 0x2C, 0x58, 0x5E] # CRC CHECK
-RPM_P0500 = [0x01, 0x06, 0x00, 0x79, 0x01, 0xF4, 0x58, 0x04] # CRC CHECK
-RPM_P0700 = [0x01, 0x06, 0x00, 0x79, 0x02, 0xBC, 0x58, 0xC2] # CRC CHECK
-RPM_P1000 = [0x01, 0x06, 0x00, 0x79, 0x03, 0xE8, 0x58, 0xAD] 
+RPM_P0300 = [0x01, 0x06, 0x00, 0x79, 0x01, 0x2C, 0x58, 0x5E]
+RPM_P0500 = [0x01, 0x06, 0x00, 0x79, 0x01, 0xF4, 0x58, 0x04]
+RPM_P0700 = [0x01, 0x06, 0x00, 0x79, 0x02, 0xBC, 0x58, 0xC2]
+RPM_P1000 = [0x01, 0x06, 0x00, 0x79, 0x03, 0xE8, 0x58, 0xAD]
 RPM_P2000 = [0x01, 0x06, 0x00, 0x79, 0x07, 0xD0, 0x5B, 0xBF]
 RPM_P3000 = [0x01, 0x06, 0x00, 0x79, 0x0B, 0xB8, 0x5F, 0x51]
 
 RPM_0 =     [0x01, 0x06, 0x00, 0x79, 0x00, 0x00, 0x58, 0x13]
 
-RPM_N0300 = [0x01, 0x06, 0x00, 0x79, 0xFE, 0x6C, 0x00, 0x00] # CRC CHECK
-RPM_N0500 = [0x01, 0x06, 0x00, 0x79, 0xF1, 0x0C, 0x00, 0x00] # CRC CHECK
-RPM_N0700 = [0x01, 0x06, 0x00, 0x79, 0xED, 0xA4, 0x00, 0x00] # CRC CHECK
+RPM_N0300 = [0x01, 0x06, 0x00, 0x79, 0x00, 0x00, 0x00, 0x00] # CRC CHECK
+RPM_N0500 = [0x01, 0x06, 0x00, 0x79, 0x00, 0x00, 0x00, 0x00] # CRC CHECK
+RPM_N0700 = [0x01, 0x06, 0x00, 0x79, 0x00, 0x00, 0x00, 0x00] # CRC CHECK
 RPM_N1000 = [0x01, 0x06, 0x00, 0x79, 0xFC, 0x18, 0x19, 0x19]
 RPM_N2000 = [0x01, 0x06, 0x00, 0x79, 0xF8, 0x30, 0x1B, 0xC7]
 RPM_N3000 = [0x01, 0x06, 0x00, 0x79, 0xF4, 0x48, 0x1E, 0xE5]
-
 
 class Driving(Node):
     def __init__(self):
@@ -73,20 +71,26 @@ class Driving(Node):
             self.cmd_vel_callback,
             10
         )
+        self.input_rpm_sub = self.create_subscription(
+            Int16,
+            'input_rpm',
+            self.input_rpm_callback,
+            10
+        )
 
         # publisher
         self.req_rpm_publisher = self.create_publisher(Int32, 'req_rpm', qos_profile)
         self.cur_rpm_publisher = self.create_publisher(Int32, 'cur_rpm', qos_profile)
 
-        # timer
-        timer_period= 1.0 # seconds
-        self.timer = self.create_timer(timer_period, self.timer_callback)
+        # info timer
+        info_timer_period = 1.0 # seconds
+        self.info_timer = self.create_timer(info_timer_period, self.info_timer_callback)
 
         self.get_logger().info("init driving node ! ")
 
 
     # info timer
-    def timer_callback(self):
+    def info_timer_callback(self):
         try:
             # publish current rpm
             cur_rpm = Int32()
@@ -112,18 +116,22 @@ class Driving(Node):
         except Exception as e:
             self.get_logger().error("Fail to write : {}".format(e))
 
-    # # keyboard_motor_control
-    # def keyboard_motor_control(self):
-    #     if self.key =='q':
-    #         self.instrument.serial.write(bytes(RPM_P0300))
-    #     elif self.key -- 'w':
-    #         self.instrument.serial.write(bytes(RPM_P0500))
-    #     elif self.key == 'e':
-    #         self.instrument.serial.write(bytes(RPM_P0700))                       
-    #     elif self.key == 'r':
-    #         self.instrument.serial.write(bytes(RPM_P1000))
-    #     else :
-    #         self.stop_motor(RPM_0)    
+    def input_rpm_callback(self, msg):
+        try:
+            if msg.data == 300:
+                self.instrument.serial.write(bytes(RPM_P0300))
+            elif msg.data == 500:
+                self.instrument.serial.write(bytes(RPM_P0500))
+            elif msg.data == 700:
+                self.instrument.serial.write(bytes(RPM_P0700))
+            elif msg.data == 1000:
+                self.instrument.serial.write(bytes(RPM_P1000))
+            elif msg.data == 0:
+                self.instrument.serial.write(bytes(RPM_0))
+            elif msg.data == -1000:
+                self.instrument.serial.write(bytes(RPM_N1000))
+        except Exception as e:
+            self.get_logger().error("Fail to write : {}".format(e))
 
 def main(args=None):
     rclpy.init(args=args)
