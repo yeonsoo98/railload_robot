@@ -4,6 +4,14 @@
   * driving.py -> motor_protocol & start_node
   
   * teleop.keyboard -> motor_control
+  
+  * keyboard_command.py -> motor_speed_control
+    - q : 300 rpm
+    - w : 500 rpm
+    - e : 700 rpm
+    - r : 1000 rpm
+    - z : - 1000 rpm
+    - s : 0 rpm (Stop)
 
 * Hardware settings 
 SBC -> Motor Drive (USE RS 485) Modbus Protocol -> Motor 
