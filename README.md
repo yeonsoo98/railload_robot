@@ -4,7 +4,9 @@
   * driving.py -> motor_protocol & start_node
   
   * teleop.keyboard -> motor_control
-  
+    - teleop keyboard input -> linear.x > 0.0 -> 1000 rpm
+    - teleop keyboard input -> linear.x < 0.0 -> - 1000 rpm
+    
   * keyboard_command.py -> motor_speed_control
     - q : 300 rpm
     - w : 500 rpm
