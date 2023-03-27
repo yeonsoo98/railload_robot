@@ -1,5 +1,12 @@
 # Railload Robot
 
+
+## railrobot video 
+- https://github.com/yeonsoo98/railload_robot/issues/1 
+
+## motor control video 
+- https://github.com/yeonsoo98/railload_robot/issues/2
+
 * function
   * driving.py -> motor_protocol & start_node
   
