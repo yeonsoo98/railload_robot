@@ -25,7 +25,7 @@
     - ros2 run teleop_twist_joy teleop_node
     - driving.py 
     
-    - Code start * Push R1 * Wheel
+    - Code start / Joystick -  Push R1 & Wheel
 
 * Hardware settings 
 SBC -> Motor Drive (USE RS 485) Modbus Protocol -> Motor 
