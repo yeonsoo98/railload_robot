@@ -1,12 +1,5 @@
 # Railload Robot
 
-![image](https://user-images.githubusercontent.com/77741178/227869522-9508049b-72ac-45d3-bcf6-242c2bf124c2.png)
-
-
-![image](https://user-images.githubusercontent.com/77741178/227869685-8dc22796-f516-42ba-83f0-7122b04468b0.png)
-
-
-
 * function
   * driving.py -> motor_protocol & start_node
   
@@ -50,7 +43,7 @@ SBC -> Motor Drive (USE RS 485) Modbus Protocol -> Motor
 ![image](https://user-images.githubusercontent.com/77741178/224618265-b069b8f8-3a3d-48df-b604-611ab070acca.png)
 
    * Joystick
-![image](https://user-images.githubusercontent.com/77741178/227869307-a930d00f-b5df-448f-b97b-ba909b646b96.png)
+![image](https://user-images.githubusercontent.com/77741178/227869307-a930d00f-b5df-448f-b97b-ba909b646b96.png)**
 
 
 - TBD ...Railload
