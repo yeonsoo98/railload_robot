@@ -3,9 +3,12 @@
 * function
   * driving.py -> motor_protocol & start_node
   
+  
   * teleop.keyboard -> motor_control
     - teleop keyboard input -> linear.x > 0.0 -> 1000 rpm
     - teleop keyboard input -> linear.x < 0.0 -> - 1000 rpm
+    
+    
     
   * keyboard_command.py -> motor_speed_control
     - q : 300 rpm
@@ -15,7 +18,9 @@
     - z : - 1000 rpm
     - s : 0 rpm (Stop)
     
-    * Joystick control
+    
+    
+  * Joystick control
     - ros2 run joy joy_node 
     - ros2 run teleop_twist_joy teleop_node
     - driving.py 
