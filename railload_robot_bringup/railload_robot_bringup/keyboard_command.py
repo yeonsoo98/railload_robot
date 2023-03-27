@@ -72,15 +72,14 @@ class KeyboardCommand(Node):
 def main(args=None):
     rclpy.init(args=args)
     keyboard_command = KeyboardCommand()
-    rclpy.spin(keyboard_command)
-    # try:
-    #     rclpy.spin(keyboard_command)
-    # except KeyboardInterrupt:
-    #     pass
-
-    # Destroy the node explicitly
-    keyboard_command.destroy_node()
-    rclpy.shutdown()
+    
+    try:
+         rclpy.spin(keyboard_command)
+     except KeyboardInterrupt:
+        
+        keyboard_command.get_logger().info("Keyboard interrupt, shutting down")
+        keyboard_command.destroy_node()
+        rclpy.shutdown()
 
 if __name__=='__main__':
     main()
