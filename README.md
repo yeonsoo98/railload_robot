@@ -1,12 +1,14 @@
 # Railload Robot
 
 
-## railrobot video 
+## Railload Robot Video 
 - https://github.com/yeonsoo98/railload_robot/issues/1 
 
-## motor control video 
+## Motor Control Video 
 - https://github.com/yeonsoo98/railload_robot/issues/2
 
+
+## Railload Robot Explanation
 * function
   * driving.py -> motor_protocol & start_node
   
@@ -50,7 +52,7 @@ SBC -> Motor Drive (USE RS 485) Modbus Protocol -> Motor
 ![image](https://user-images.githubusercontent.com/77741178/224618265-b069b8f8-3a3d-48df-b604-611ab070acca.png)
 
    * Joystick
-![image](https://user-images.githubusercontent.com/77741178/227869307-a930d00f-b5df-448f-b97b-ba909b646b96.png)**
+![조이스틱](https://user-images.githubusercontent.com/77741178/227871724-d1294560-3b27-4d87-95a4-6c7b3c2d1ae8.jpeg)
 
 
 - TBD ...Railload
