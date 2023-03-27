@@ -74,7 +74,7 @@ def main(args=None):
     keyboard_command = KeyboardCommand()
     
     try:
-         rclpy.spin(keyboard_command)
+        rclpy.spin(keyboard_command)
     except KeyboardInterrupt:
         
         keyboard_command.get_logger().info("Keyboard interrupt, shutting down")
