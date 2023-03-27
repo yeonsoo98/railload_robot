@@ -27,6 +27,7 @@ setup(
         'console_scripts': [
             'driving = '+ pkg_name + '.driving:main'
             'keyboard_command='+ pkg_name + '.keyboard_command:main'
+            'joystick_command='+ pkg_name + '.joystick_command:main'
         ],
     },
 )
