@@ -4,10 +4,10 @@
 ## Railload Robot Video 
 - https://github.com/yeonsoo98/railload_robot/issues/1 
 
-## Motor Control Video 
+## Motor Control Video 1
 - https://github.com/yeonsoo98/railload_robot/issues/2
 
-## Motor Control Video
+## Motor Control Video 2
 - https://github.com/yeonsoo98/railload_robot/issues/3
 
 
