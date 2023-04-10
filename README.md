@@ -7,6 +7,9 @@
 ## Motor Control Video 
 - https://github.com/yeonsoo98/railload_robot/issues/2
 
+## Motor Control Video
+- https://github.com/yeonsoo98/railload_robot/issues/3
+
 
 ## Railload Robot Explanation
 * function
