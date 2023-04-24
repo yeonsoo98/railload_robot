@@ -5,6 +5,7 @@ import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
 
+from geometry_msgs.msg import Twist
 from bboxes_ex_msgs.msg import BoundingBoxes, BoundingBox
 
 class Follower(Node):
@@ -16,8 +17,16 @@ class Follower(Node):
         self.bbox_sub = self.create_subscription(
             BoundingBoxes, 'yolov5/bounding_boxes', self.bbox_callback, qos_profile)
 
-        #self.target = -1
+        # 추가 cmd_vel publisher
+        self.cmd_vel_pub = self.create_publisher(Twist, 'cmd_vel', qos_profile)
+    
         self.target_box = [0, 0, 0, 0]
+        
+        # 추가 
+        self.target_class = 'person'
+        self.image_center = 640 // 2  # assuming image width of 640 pixels
+        self.linear_speed = 0.2
+        self.angular_speed = 0.5
 
     def bbox_callback(self, msg):
         for box in msg.bounding_boxes:
@@ -25,6 +34,21 @@ class Follower(Node):
             self.target_box = [box.xmin, box.ymin, box.xmax, box.ymax]
             self.get_logger().info(str(self.target_box))
             
+    def track_object(self):
+        # Calculate object's center
+        object_center = (self.target_box[2] + self.target_box[0]) / 2
+
+        # Calculate distance between object's center and image center
+        distance = object_center - self.image_center
+
+        # Calculate angular velocity
+        angular_velocity = -1 * distance / self.image_center * self.angular_speed
+
+        # Create Twist message and publish it
+        twist_msg = Twist()
+        twist_msg.linear.x = self.linear_speed
+        twist_msg.angular.z = angular_velocity
+        self.cmd_vel_pub.publish(twist_msg)
 
 def main(args=None):
     rclpy.init(args=args)
