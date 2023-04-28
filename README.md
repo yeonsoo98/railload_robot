@@ -12,17 +12,17 @@
 
 
 ## Railload Robot Explanation
-* function
-  * driving.py -> motor_protocol & start_node
+* Functionality
+  * driving.py: motor_protocol & start_node
   
   
-  * teleop.keyboard -> motor_control
+  * teleop.keyboard: motor_control
     - teleop keyboard input -> linear.x > 0.0 -> 1000 rpm
     - teleop keyboard input -> linear.x < 0.0 -> - 1000 rpm
     
     
     
-  * keyboard_command.py -> motor_speed_control
+  * keyboard_command.py: motor_speed_control
     - q : 300 rpm
     - w : 500 rpm
     - e : 700 rpm
@@ -35,9 +35,13 @@
   * Joystick control
     - ros2 run joy joy_node 
     - ros2 run teleop_twist_joy teleop_node
-    - driving.py 
-    
+    - driving.py
     - Code start / Joystick -  Push R1 & Wheel
+
+  * Person Tracker
+      - YOLOv5 model 
+      - object detect
+      - driving.py 
 
 * Hardware settings 
 SBC -> Motor Drive (USE RS 485) Modbus Protocol -> Motor 
