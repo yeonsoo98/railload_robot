@@ -35,20 +35,21 @@ class Follower(Node):
             self.get_logger().info(str(self.target_box))
             
     def track_object(self):
-        # Calculate object's center
+        # 중심 계산 
         object_center = (self.target_box[2] + self.target_box[0]) / 2
 
-        # Calculate distance between object's center and image center
+        # 거래 계산
         distance = object_center - self.image_center
 
-        # Calculate angular velocity
-        angular_velocity = -1 * distance / self.image_center * self.angular_speed
-
-        # Create Twist message and publish it
         twist_msg = Twist()
         twist_msg.linear.x = self.linear_speed
-        twist_msg.angular.z = angular_velocity
         self.cmd_vel_pub.publish(twist_msg)
+        
+        # 각속도 관련
+        # 각속도 필요 없을 듯
+        # angular_velocity = -1 * distance / self.image_center * self.angular_spee
+        # twist_msg.angular.z = angular_velocity
+        
 
 def main(args=None):
     rclpy.init(args=args)
