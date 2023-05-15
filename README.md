@@ -44,6 +44,7 @@
       - object detect -> person / ... 
       - driving.py 
       - tracker.py
+      
             - use depth camera (realsense2) to check object distance
             - person distance < 1.5 m   -> robot stop 
             - person distance > 1.5 m   -> robot go 
