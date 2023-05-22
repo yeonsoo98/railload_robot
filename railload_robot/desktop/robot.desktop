@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=0.0
+Name=Railload Robot
+Type=Application
+Exec=bash -c "source /opt/ros/foxy/setup.bash && source /home/$USER/ros2_ws/install/local_setup.bash && ros2 launch railload_robot_bringup robot.launch.py"
+Hidden=false
+NoDisplay=false
+Terminal=true
+X-GNOME-Autostart-Delay=10
+X-GNOME-Autostart-enabled=true
+Name[en_US]=Robot Auto Start
+Comment[en_US]=robot minimal launch
+Comment=robot minimal launch
+

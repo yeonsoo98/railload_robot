@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.8
 # -*- coding: utf-8 -*- #
 
 import rclpy
@@ -108,9 +108,9 @@ class Driving(Node):
     def cmd_vel_callback(self, msg):
         try:
             if msg.linear.x > 0.0:
-                self.instrument.serial.write(bytes(RPM_P1000))
+                self.instrument.serial.write(bytes(RPM_P0300))
             elif msg.linear.x < 0.0:
-                self.instrument.serial.write(bytes(RPM_N1000))
+                self.instrument.serial.write(bytes(RPM_N0300))
             else:
                 self.instrument.serial.write(bytes(RPM_0))
         except Exception as e:

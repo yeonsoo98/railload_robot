@@ -24,9 +24,9 @@ class Follower(Node):
         self.bbox_sub = self.create_subscription(
             BoundingBoxes, 'yolov5/bounding_boxes', self.bbox_callback, qos_profile)
         self.depth_sub = self.create_subscription(
-            Image, 'camera/depth/image_raw', self.depth_callback, qos_profile)
+            Image, 'camera/aligned_depth_to_color/image_raw', self.depth_callback, qos_profile)
         self.depth_info_sub = self.create_subscription(
-            CameraInfo, 'camera/depth/camera_info', self.depth_info_callback, qos_profile)
+            CameraInfo, 'camera/aligned_depth_to_color/camera_info', self.depth_info_callback, qos_profile)
 
         # Publisher
         self.cmd_vel_pub = self.create_publisher(Twist, 'cmd_vel', qos_profile)

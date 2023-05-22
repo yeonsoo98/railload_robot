@@ -25,10 +25,10 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'driving = '+ pkg_name + '.driving:main'
-            'keyboard_command='+ pkg_name + '.keyboard_command:main'
-            'joystick_command='+ pkg_name + '.joystick_command:main'
-            'tracker='+ pkg_name + '.tracker:main'
+            'driving = '+ pkg_name + '.driving:main',
+            'keyboard_command='+ pkg_name + '.keyboard_command:main',
+            'joystick_command='+ pkg_name + '.joystick_command:main',
+            'tracker='+ pkg_name + '.tracker:main',
         ],
     },
 )
