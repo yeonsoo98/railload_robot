@@ -12,6 +12,7 @@ import math
 from sensor_msgs.msg import Image, CameraInfo
 from geometry_msgs.msg import Twist
 from bboxes_ex_msgs.msg import BoundingBoxes, BoundingBox
+from std_msgs.msg import Float32, Int8
 
 class Follower(Node):
 
@@ -30,16 +31,17 @@ class Follower(Node):
 
         # Publisher
         self.cmd_vel_pub = self.create_publisher(Twist, 'cmd_vel', qos_profile)
+        self.min_depth_pub = self.create_publisher(Float32, 'min_depth', qos_profile)
+        self.count_people_pub = self.create_publisher(Int8, 'count_people', qos_profile)
+
+        # Timer
+        self.control_timer = self.create_timer(1, self.control_callback)
 
         # target related
-        self.target_box = [0, 0, 0, 0]
+        self.target_box = []
         self.target_class = 'person'
-        self.target_depth = 0.0
+        self.target_depth = []
         self.target_flag = False
-
-        # people check
-        self.target_depths = []
-        self.target_boxes = []
 
         # control related
         self.linear_speed = 0.5
@@ -55,40 +57,14 @@ class Follower(Node):
         for box in msg.bounding_boxes:
             if box.class_id == self.target_class:
                 # self.get_logger().info(str(box.class_id) + str(box.id))
-                self.target_box = [box.xmin, box.ymin, box.xmax, box.ymax]
+                self.target_box.append([box.xmin, box.ymin, box.xmax, box.ymax])
                 # self.get_logger().info(str(self.target_box))
                 self.target_flag = True
             else:
+                self.target_box = []
+                self.target_depth = []
                 self.target_flag = False
 
-        # people check
-        self.target_boxes = []
-        self.target_depths = []
-
-        for box  in msg.bounding_boxes:
-            if box.class_id == self.target_class:
-                self.target_boxes.append([box.xmin, box.ymin, box.xmax, box.ymax])
-
-        if len(self.target_boxes) > 0:
-            self.measure_closest_distance()        
-
-    def measure_closest_distance(self):
-        closest_distance = float('inf')
-
-        for depth_list in self.target_depths:
-            if not depth_list:
-                continue
-
-        min_depth = min(self.target_depths)
-        if min_depth < closest_distance:
-            closest_distance = min_depth
-
-        if closest_distance == float('inf'):
-            self.get_logger().info("NO person distance detected")
-        else:
-            self.get_logger().info("Closet person distance : {}m".format(round(closest_distance,3)))
-            
-            
     def depth_info_callback(self, msg):
         # Intrinsic camera matrix for the raw (distorted) images.
         #     [fx  0 cx]
@@ -103,59 +79,80 @@ class Follower(Node):
             self.inv_fy = 1. / self.m_fy;
 
     def depth_callback(self, msg):
+        self.target_depth = []
+
         if self.target_flag:
             # ros2 Image msg to numpy array
             depth_image = self.bridge.imgmsg_to_cv2(msg, '32FC1')
 
-            x = self.target_box[0]
-            y = self.target_box[1]
-            w = self.target_box[2] - self.target_box[0]
-            h = self.target_box[3] - self.target_box[1]
+            for box in self.target_box:
+                x = box[0]
+                y = box[1]
+                w = box[2] - box[0]
+                h = box[3] - box[1]
 
-            # Boxes as large as 30px centered on the center of the box
-            x = x + w//2 - 15
-            y = y + h//2 - 15
-            w = 30
-            h = 30
+                # Boxes as large as 30px centered on the center of the box
+                x = x + w//2 - 15
+                y = y + h//2 - 15
+                w = 30
+                h = 30
 
-            roi_depth = depth_image[y:y+h, x:x+w]
+                roi_depth = depth_image[y:y+h, x:x+w]
 
-            inv_fx = 1. / self.m_fx
-            inv_fy = 1. / self.m_fy
+                inv_fx = 1. / self.m_fx
+                inv_fy = 1. / self.m_fy
 
-            n = 0
-            sum = 0
-            for i in range(0, roi_depth.shape[0]):
-                for j in range(0, roi_depth.shape[1]):
-                    value = roi_depth.item(i, j)
-                    # self.get_logger().info(str(value))
-                    if value > 0.0:
-                        n = n + 1
-                        sum = sum + value
-            try:
-                point_z = sum / n * 0.001
-                point_x = ((x + w/2) - self.m_cx) * point_z * inv_fx
-                point_y = ((y + h/2) - self.m_cy) * point_z * inv_fy
-                self.depth_array[0] = np.array(math.sqrt(point_x * point_x + point_y * point_y + point_z * point_z))
-                self.target_depth = float(self.depth_array.mean(axis=0))
-                self.get_logger().info(str(round(self.target_depth, 3)) + 'm')
-                
-                # depth range: 0.5m ~ 1.5m
-                if 0.5 < self.target_depth < 1.5:
-                    self.cmd_vel.linear.x = 0.0
-                    self.cmd_vel.angular.z = 0.0
-                    self.cmd_vel_pub.publish(self.cmd_vel)
-                elif self.target_depth < 0.5:
-                    self.cmd_vel.linear.x = -self.linear_speed
-                    self.cmd_vel.angular.z = 0.0
-                    self.cmd_vel_pub.publish(self.cmd_vel)
-                elif self.target_depth > 1.5:
-                    self.cmd_vel.linear.x = self.linear_speed
-                    self.cmd_vel.angular.z = 0.0
-                    self.cmd_vel_pub.publish(self.cmd_vel)
-            except Exception as e:
-                self.get_logger().error("Fail to calculate depth : {}".format(e))
-            
+                n = 0
+                sum = 0
+                for i in range(0, roi_depth.shape[0]):
+                    for j in range(0, roi_depth.shape[1]):
+                        value = roi_depth.item(i, j)
+                        # self.get_logger().info(str(value))
+                        if value > 0.0:
+                            n = n + 1
+                            sum = sum + value
+                try:
+                    point_z = sum / n * 0.001
+                    point_x = ((x + w/2) - self.m_cx) * point_z * inv_fx
+                    point_y = ((y + h/2) - self.m_cy) * point_z * inv_fy
+                    self.depth_array[0] = np.array(math.sqrt(point_x * point_x + point_y * point_y + point_z * point_z))
+                    mean_depth = float(self.depth_array.mean(axis=0))
+                    self.target_depth.append(mean_depth)
+                except Exception as e:
+                    self.get_logger().error("Fail to calculate depth : {}".format(e))
+
+        # Publish count_people
+        try:
+            count_people_msg = Int8()
+            count_people_msg.data = len(self.target_depth)
+            self.count_people_pub.publish(count_people_msg)
+        except Exception as e:
+            pass
+
+    def control_callback(self):
+        try:
+            min_depth_msg = Float32()
+            min_depth_msg.data = min(self.target_depth)
+            self.get_logger().info('closest person distance' + str(round(min_depth_msg.data, 3)) + 'm')
+
+            self.min_depth_pub.publish(min_depth_msg)
+
+            # depth range: 0.5m ~ 1.5m
+            if 0.5 < min_depth_msg.data < 1.5:
+                self.cmd_vel.linear.x = 0.0
+                self.cmd_vel.angular.z = 0.0
+                self.cmd_vel_pub.publish(self.cmd_vel)
+            elif min_depth_msg.data < 0.5:
+                self.cmd_vel.linear.x = -self.linear_speed
+                self.cmd_vel.angular.z = 0.0
+                self.cmd_vel_pub.publish(self.cmd_vel)
+            elif min_depth_msg.data > 1.5:
+                self.cmd_vel.linear.x = self.linear_speed
+                self.cmd_vel.angular.z = 0.0
+                self.cmd_vel_pub.publish(self.cmd_vel)
+
+        except Exception as e:
+            pass
 
 def main(args=None):
     rclpy.init(args=args)
