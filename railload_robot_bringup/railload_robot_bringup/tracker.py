@@ -37,6 +37,10 @@ class Follower(Node):
         self.target_depth = 0.0
         self.target_flag = False
 
+        # people check
+        self.target_depths = []
+        self.target_boxes = []
+
         # control related
         self.linear_speed = 0.5
         self.cmd_vel = Twist()
@@ -47,6 +51,7 @@ class Follower(Node):
         self.depth_array = np.zeros(1)
 
     def bbox_callback(self, msg):
+
         for box in msg.bounding_boxes:
             if box.class_id == self.target_class:
                 # self.get_logger().info(str(box.class_id) + str(box.id))
@@ -56,6 +61,34 @@ class Follower(Node):
             else:
                 self.target_flag = False
 
+        # people check
+        self.target_boxes = []
+        self.target_depths = []
+
+        for box  in msg.bounding_boxes:
+            if box.class_id == self.target_class:
+                self.target_boxes.append([box.xmin, box.ymin, box.xmax, box.ymax])
+
+        if len(self.target_boxes) > 0:
+            self.measure_closest_distance()        
+
+    def measure_closest_distance(self):
+        closest_distance = float('inf')
+
+        for depth_list in self.target_depths:
+            if not depth_list:
+                continue
+
+        min_depth = min(self.target_depths)
+        if min_depth < closest_distance:
+            closest_distance = min_depth
+
+        if closest_distance == float('inf'):
+            self.get_logger().info("NO person distance detected")
+        else:
+            self.get_logger().info("Closet person distance : {}m".format(round(closest_distance,3)))
+            
+            
     def depth_info_callback(self, msg):
         # Intrinsic camera matrix for the raw (distorted) images.
         #     [fx  0 cx]
