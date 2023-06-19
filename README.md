@@ -49,6 +49,9 @@
             - person distance < 1.5 m   -> robot stop 
             - person distance > 1.5 m   -> robot go 
             - restict / camera performance - 10 m
+            - closet distance 
+            - count people
+            - motor delay (with timer)
 
 * Hardware settings 
 SBC -> Motor Drive (USE RS 485) Modbus Protocol -> Motor 
