@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot name="railload_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+    <!-- xacro argument -->
+    <xacro:arg name="use_nominal_extrinsics" default="true"/>
+
+    <!-- xacro include -->
+    <xacro:include filename="$(find railload_robot_description)/urdf/common_inertia.urdf.xacro" />
+    <xacro:include filename="$(find railload_robot_description)/urdf/railload_robot_properties.urdf.xacro" />
+    <xacro:include filename="$(find railload_robot_description)/urdf/robot/base.urdf.xacro" />
+    <xacro:include filename="$(find railload_robot_description)/urdf/robot/wheel.urdf.xacro" />
+    <!-- <xacro:include filename="$(find railload_robot_description)/urdf/robot/differential_drive.gazebo.xacro" />
+    <xacro:include filename="$(find railload_robot_description)/urdf/sensors/lidar.urdf.xacro" />
+    <xacro:include filename="$(find railload_robot_description)/urdf/sensors/d435.urdf.xacro" /> -->
+
+    <!-- Robot Base -->
+    <xacro:base mass="${base_mass}"/>
+
+    <!-- Robot Wheels -->
+    <xacro:wheel mass="${wheel_mass}"/>
+
+    <!-- Differential Drive Controller (Plugin) -->
+    <!-- <xacro:differential_drive_controller/> -->
+
+    <!-- Lidars (Plugin) -->
+    <!-- <xacro:lidar>
+        <xacro:insert_block name="lidar_pose" />
+    </xacro:lidar> -->
+
+    <!-- IntelRealsense D435 (Plugin) -->
+    <!-- <xacro:sensor_d435 parent="base_link" name="camera" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
+        <xacro:insert_block name="camera_pose" />
+    </xacro:sensor_d435> -->
+
+</robot>

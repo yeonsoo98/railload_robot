@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="base" params="mass">
+    <xacro:property name="PI" value="3.1415926535897931" />
+        <link name="base_footprint"/>
+
+        <link name="base_link" >
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.5 0.2 0.2"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.5 0.2 0.2"/>
+                </geometry>
+            </collision>
+            <xacro:box_inertial x="0.5" y="2.0" z="0.5" mass="5.0" />
+        </link>
+
+        <!-- Front Body -->
+        <link name="front_body" >
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.5 2.0 0.5"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.5 2.0 0.5"/>
+                </geometry>
+            </collision>
+            <xacro:box_inertial x="0.5" y="2.0" z="0.5" mass="${mass}" />
+        </link>
+
+        <!-- Rear Body -->
+        <link name="rear_body" >
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.5 2.0 0.5"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.5 2.0 0.5"/>
+                </geometry>
+            </collision>
+            <xacro:box_inertial x="0.5" y="2.0" z="0.5" mass="${mass}" />
+        </link>
+
+        <!-- Joint - base_link ~ front_body -->
+        <joint name="base_link_to_front_body" type="fixed">
+            <parent link="base_link"/>
+            <child link="front_body"/>
+            <origin xyz="0.5 0 0" rpy="0 0 0"/>
+        </joint>
+
+        <!-- Joint - base_link ~ rear_body -->
+        <joint name="base_link_to_rear_boby" type="fixed">
+            <parent link="base_link"/>
+            <child link="rear_body"/>
+            <origin xyz="-0.5 0 0.0" rpy="0 0 0"/>
+        </joint>
+
+        <!-- Joint - base_link ~ base_footprint -->
+        <joint name="base_link_to_footprint" type="fixed">
+            <parent link="base_footprint"/>
+            <child link="base_link"/>
+            <origin xyz="0 0 0.3285" rpy="0 0 0"/>
+        </joint>
+
+    </xacro:macro>
+</robot>

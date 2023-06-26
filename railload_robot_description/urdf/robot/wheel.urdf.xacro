@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- Constants -->
+    <xacro:property name="PI" value="3.1415926535897931" />
+    <xacro:property name="wheel_length" value="0.1" />
+    <xacro:property name="wheel_radius" value="0.2" />
+    <xacro:property name="wheel_mass" value="5" />
+
+    <!-- Set up of the Wheel -->
+    <xacro:macro name="wheel" params="mass">
+        <!-- Wheel1 Link -->
+        <link name="wheel1">
+            <visual>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+                </geometry>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+                </geometry>
+            </collision>
+
+            <xacro:cylinder_inertial radius="${wheel_radius}" length="${wheel_length}" mass="${wheel_mass}" />
+        </link>
+
+        <gazebo reference="wheel1">
+            <mu1>0.01</mu1>
+            <mu2>0.01</mu2>
+        </gazebo>
+
+        <!-- Joint - front_body ~ wheel1 -->
+        <joint name="wheel1_joint" type="fixed">
+            <axis xyz="0 0 1" />
+            <parent link="front_body"/>
+            <child link="wheel1"/>
+            <origin xyz="0.0 0.7 -0.2" rpy="${PI/2} 0 -${PI}" />
+        </joint>
+
+        <!-- Wheel2 Link -->
+        <link name="wheel2">
+            <visual>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+                </geometry>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+                </geometry>
+            </collision>
+
+            <xacro:cylinder_inertial radius="${wheel_radius}" length="${wheel_length}" mass="${wheel_mass}" />
+        </link>
+
+        <gazebo reference="wheel2">
+            <mu1>0.01</mu1>
+            <mu2>0.01</mu2>
+        </gazebo>
+
+        <!-- Joint - front_body ~ wheel2 -->
+        <joint name="wheel2_joint" type="fixed">
+            <axis xyz="0 0 1" />
+            <parent link="front_body"/>
+            <child link="wheel2"/>
+            <origin xyz="0.0 -0.7 -0.2" rpy="${PI/2} 0 -${PI}" />
+        </joint>
+
+        <link name="wheel3">
+            <visual>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+                </geometry>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+                </geometry>
+            </collision>
+
+            <xacro:cylinder_inertial radius="${wheel_radius}" length="${wheel_length}" mass="${wheel_mass}" />
+        </link>
+
+        <gazebo reference="wheel3">
+            <mu1>0.01</mu1>
+            <mu2>0.01</mu2>
+        </gazebo>
+
+        <!-- Joint - rear_body ~ wheel3 -->
+        <joint name="wheel3_joint" type="fixed">
+            <axis xyz="0 0 1" />
+            <parent link="rear_body"/>
+            <child link="wheel3"/>
+            <origin xyz="0.0 0.7 -0.2" rpy="${PI/2} 0 -${PI}" />
+        </joint>
+
+        <!-- Wheel4 Link -->
+        <link name="wheel4">
+            <visual>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+                </geometry>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+                </geometry>
+            </collision>
+
+            <xacro:cylinder_inertial radius="${wheel_radius}" length="${wheel_length}" mass="${wheel_mass}" />
+        </link>
+
+        <gazebo reference="wheel4">
+            <mu1>0.01</mu1>
+            <mu2>0.01</mu2>
+        </gazebo>
+
+        <!-- Joint - rear_body ~ wheel1 -->
+        <joint name="wheel4_joint" type="fixed">
+            <axis xyz="0 0 1" />
+            <parent link="rear_body"/>
+            <child link="wheel4"/>
+            <origin xyz="0.0 -0.7 -0.2" rpy="${PI/2} 0 -${PI}" />
+        </joint>
+
+
+    </xacro:macro>
+</robot>
