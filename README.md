@@ -21,6 +21,8 @@
 
 ## 향후 계획
 - 세부적인 rpm 설정하기 & 제어하기
+- Slam & Navigation
+- GPS 
 - 시뮬레이션 환경 구축하기
 
 ## Railload Robot Video 
