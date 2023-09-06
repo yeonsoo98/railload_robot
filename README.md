@@ -1,5 +1,29 @@
 # Railload Robot
 
+## 현재 진행 사항
+- Modbus (RS485) 통신 연결 < 모터드라이버 > - < 잿슨 오린 >
+  - driving.py
+    
+- Keyboard & Joystick 제어 가능
+  - keyboard_comand.py
+  - joystick_command.py
+    
+- Person Tracker
+  - tracker.py
+  - YOLOv5 기반의 사람 추종
+  - ( 1.5 m < Distance ) => Stop & ( 1.5 m > Distance ) => Go
+ 
+    
+- Simulation
+  - description 확인 가능
+  - body , wheel xacro file로 구성 진행중
+  - gazebo & rqt 
+
+## 향후 계획
+- 세부적인 rpm 설정하기 & 제어하기
+- Slam & Navigation
+- GPS 
+- 시뮬레이션 환경 구축하기
 
 ## Railload Robot Video 
 - https://github.com/yeonsoo98/railload_robot/issues/1 
