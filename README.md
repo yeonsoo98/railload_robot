@@ -1,4 +1,12 @@
 # Railload Robot
+- Railload Robot
+![image](https://github.com/yeonsoo98/railload_robot/assets/77741178/2e4c9d33-f0f7-4fb6-9630-87f6e2bd7863)
+
+- Railload Robot Configuration diagram
+![image](https://github.com/yeonsoo98/railload_robot/assets/77741178/8b5c6f9b-8a1c-41a9-9145-8ef78f15772a)
+
+
+
 
 ## 현재 진행 사항
 - Modbus (RS485) 통신 연결 < 모터드라이버 > - < 잿슨 오린 >
