@@ -1,7 +1,5 @@
 # Railload Robot
 
-## Railload Robot Safety Driving Video
-- https://github.com/yeonsoo98/railload_robot/issues/6
 - Railload Robot
 ![image](https://github.com/yeonsoo98/railload_robot/assets/77741178/2e4c9d33-f0f7-4fb6-9630-87f6e2bd7863)
 
