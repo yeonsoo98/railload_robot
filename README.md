@@ -1,4 +1,5 @@
 # Railload Robot
+![Screenshot from 2023-10-11 17-37-36](https://github.com/yeonsoo98/railload_robot/assets/77741178/47581042-4719-42b3-8b94-0f2d709ae6c7)
 
 - Railload Robot
 ![image](https://github.com/yeonsoo98/railload_robot/assets/77741178/2e4c9d33-f0f7-4fb6-9630-87f6e2bd7863)
