@@ -9,6 +9,12 @@
 
 
 
+![Screenshot from 2023-10-11 17-37-36](https://github.com/yeonsoo98/railload_robot/assets/77741178/47581042-4719-42b3-8b94-0f2d709ae6c7)
+
+file:///home/yeonsoo/Pictures/Screenshot%20from%202023-10-11%2018-01-03.png
+
+
+
 
 ## 현재 진행 사항
 - Modbus (RS485) 통신 연결 < 모터드라이버 > - < 잿슨 오린 >
