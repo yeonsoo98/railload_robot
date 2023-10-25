@@ -20,7 +20,6 @@ SERVO_OFF = [0x01, 0x06, 0x00, 0x78, 0x01, 0x00, 0x08, 0x43]
 BREAK_ON =  [0x01, 0x06, 0x00, 0x78, 0x01, 0x01, 0xC9, 0x83]
 BREAK_OFF = [0x01, 0x06, 0x00, 0x78, 0x01, 0x00, 0x08, 0x43]
 
-
 RPM_P0030 = [0x01, 0x06, 0x00, 0x79, 0x00, 0x1E, 0xD8, 0x1B]
 RPM_P0050 = [0x01, 0x06, 0x00, 0x79, 0x00, 0x32, 0xD9, 0xC6]
 RPM_P0100 = [0x01, 0x06, 0x00, 0x79, 0x00, 0x64, 0x59, 0xF8]
@@ -42,53 +41,21 @@ RPM_N2000 = [0x01, 0x06, 0x00, 0x79, 0xF8, 0x30, 0x1B, 0xC7]
 RPM_N3000 = [0x01, 0x06, 0x00, 0x79, 0xF4, 0x48, 0x1E, 0xE5]
 
 class Driving(Node):
-    # def __init__(self):
-    #     super().__init__("driving_node")
-    #     qos_profile = QoSProfile(depth=10)
-
-    #     # motor driver setup
-    #     self.instrument = minimalmodbus.Instrument("/dev/motor_driver", ADDRESS)  # port name, slave address (in decimal)
-    #     self.instrument.serial.baudrate = 115200  # Baud
-    #     self.instrument.serial.bytesize = 8
-    #     self.instrument.serial.parity = serial.PARITY_NONE
-    #     self.instrument.clear_buffers_before_each_transaction = True
-    #     self.instrument.serial.stopbits = 1
-    #     self.instrument.serial.timeout = 0.05 # seconds
-    #     self.instrument.mode = minimalmodbus.MODE_RTU  # rtu or ascii mode
-
-    #     try:
-    #         self.instrument.serial.write(bytes(COM_MODE))
-    #         time.sleep(0.1)
-    #         self.instrument.serial.write(bytes(SERVO_ON))
-    #         time.sleep(0.1)
-    #         self.instrument.serial.write(bytes(BREAK_OFF))
-    #         time.sleep(0.1)
-    #         self.instrument.serial.write(bytes(RPM_0))
-    #     except Exception as e:
-    #         self.get_logger().error("Fail to initialize : {}".format(e))
-    #         self.destroy_node()
-    #         rclpy.shutdown()
-
     def __init__(self):
         super().__init__("driving_node")
         qos_profile = QoSProfile(depth=10)
 
         # motor driver setup
         self.instrument = minimalmodbus.Instrument("/dev/motor_driver", ADDRESS)  # port name, slave address (in decimal)
+        self.instrument.serial.baudrate = 115200  # Baud
+        self.instrument.serial.bytesize = 8
+        self.instrument.serial.parity = serial.PARITY_NONE
+        self.instrument.clear_buffers_before_each_transaction = True
+        self.instrument.serial.stopbits = 1
+        self.instrument.serial.timeout = 0.05 # seconds
+        self.instrument.mode = minimalmodbus.MODE_RTU  # rtu or ascii mode
+
         try:
-            # 시리얼 포트 설정
-            self.instrument.serial.baudrate = 115200  # Baud
-            self.instrument.serial.bytesize = serial.EIGHTBITS  # 8 bits
-            self.instrument.serial.parity = serial.PARITY_NONE  # No parity
-            self.instrument.serial.stopbits = serial.STOPBITS_ONE  # 1 stop bit
-            self.instrument.serial.timeout = 1.0  # 1 second timeout (adjust as needed)
-
-            self.instrument.mode = minimalmodbus.MODE_RTU  # RTU mode
-
-            # 시리얼 포트 열기
-            self.instrument.serial.open()
-            
-            # 초기화 명령 전송
             self.instrument.serial.write(bytes(COM_MODE))
             time.sleep(0.1)
             self.instrument.serial.write(bytes(SERVO_ON))
@@ -142,68 +109,18 @@ class Driving(Node):
             self.get_logger().error("Fail to read : {}".format(e))
 
     # robot cmd_vel callback
-    # def cmd_vel_callback(self, msg):
-    #     try:
-    #         if msg.linear.x > 0.0:
-    #             self.instrument.serial.write(bytes(RPM_P0300))
-    #         elif msg.linear.x < 0.0:
-    #             self.instrument.serial.write(bytes(RPM_N0300))
-    #         else:
-    #             self.instrument.serial.write(bytes(RPM_0))
-    #     except Exception as e:
-    #         self.get_logger().error("Fail to write : {}".format(e))
-
-def cmd_vel_callback(self, msg):
-    try:
-        # 현재 RPM 읽기
-        cur_rpm = self.instrument.read_register(registeraddress=0x03, number_of_decimals=0, functioncode=4, signed=False)
-
-        # 목표 RPM 설정 (기본값은 0)
-        target_rpm = 0
-
-        if msg.linear.x > 0.0:
-            if cur_rpm == RPM_P0030:
-                target_rpm = RPM_P0050
-            elif cur_rpm == RPM_P0050:
-                target_rpm = RPM_P0100
-            elif cur_rpm == RPM_P0100:
-                target_rpm = RPM_P0200
-            elif cur_rpm == RPM_P0200:
-                target_rpm = RPM_P0300
-            elif cur_rpm == RPM_P0300:
-                target_rpm = RPM_P0500
-            elif cur_rpm == RPM_P0500:
-                target_rpm = RPM_P0700
-            elif cur_rpm == RPM_P0700:
-                target_rpm = RPM_P1000
-            elif cur_rpm == RPM_P1000:
-                target_rpm = RPM_P2000
-            elif cur_rpm == RPM_P2000:
-                target_rpm = RPM_P3000
-        elif msg.linear.x < 0.0:
-            # RPM을 감소시키는 방식을 추가로 정의
-            target_rpm = RPM_N1000  # 예: 감속할 RPM 값 설정
-        else:
-            target_rpm = RPM_0  # 목표 RPM을 0으로 설정하여 로봇을 정지
-
-        # 현재 RPM에서 목표 RPM으로 부드럽게 변경
-        while cur_rpm != target_rpm:
-            # RPM 감소량을 조절하여 부드러운 감속을 제어
-            rpm_decrease = 10  # RPM을 얼마나 감소시킬지 조절 (조절 필요)
-            if cur_rpm < target_rpm:
-                cur_rpm += rpm_decrease
-                if cur_rpm > target_rpm:
-                    cur_rpm = target_rpm
+    def cmd_vel_callback(self, msg):
+        try:
+            if msg.linear.x > 0.0:
+                self.instrument.serial.write(bytes(RPM_P0300))
+            elif msg.linear.x < 0.0:
+                self.instrument.serial.write(bytes(RPM_N0300))
             else:
-                cur_rpm -= rpm_decrease
-                if cur_rpm < target_rpm:
-                    cur_rpm = target_rpm
-
-            # RPM 설정 값 전송
-            self.instrument.write_register(registeraddress=0x02, value=cur_rpm, number_of_decimals=0, functioncode=6, signed=False)
-            time.sleep(0.1)  # 일정한 간격으로 RPM 값을 변경
-    except Exception as e:
-        self.get_logger().error("Fail to write : {}".format(e))
+                self.instrument.serial.write(bytes(BREAK_ON))
+                time.sleep(3)
+                self.instrument.serial.write(bytes(BREAK_OFF))
+        except Exception as e:
+            self.get_logger().error("Fail to write : {}".format(e))
 
     def input_rpm_callback(self, msg):
         try:
@@ -216,7 +133,9 @@ def cmd_vel_callback(self, msg):
             elif msg.data == 1000:
                 self.instrument.serial.write(bytes(RPM_P1000))
             elif msg.data == 0:
-                self.instrument.serial.write(bytes(RPM_0))
+                self.instrument.serial.write(bytes(BREAK_ON))
+                time.sleep(3)
+                self.instrument.serial.write(bytes(BREAK_OFF))
             elif msg.data == -1000:
                 self.instrument.serial.write(bytes(RPM_N1000))
         except Exception as e:
