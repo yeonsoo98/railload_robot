@@ -151,6 +151,24 @@ class Follower(Node):
                 self.cmd_vel.angular.z = 0.0
                 self.cmd_vel_pub.publish(self.cmd_vel)
 
+            # # 거리가 10m 미만일 때에만 움직임을 제어
+            # if min_depth_msg.data < 10.0:
+            #     if 0.5 < min_depth_msg.data < 1.5:
+            #         # 거리가 0.5m 초과 1.5m 미만인 경우, 로봇을 정지
+            #         self.cmd_vel.linear.x = 0.0
+            #         self.cmd_vel.angular.z = 0.0
+            #         self.cmd_vel_pub.publish(self.cmd_vel)
+            #     elif min_depth_msg.data < 0.5:
+            #         # 거리가 0.5m 미만인 경우, 로봇을 뒤로 이동
+            #         self.cmd_vel.linear.x = -self.linear_speed
+            #         self.cmd_vel.angular.z = 0.0
+            #         self.cmd_vel_pub.publish(self.cmd_vel)
+            #     elif min_depth_msg.data > 1.5:
+            #         # 거리가 1.5m 초과인 경우, 로봇을 전진
+            #         self.cmd_vel.linear.x = self.linear_speed
+            #         self.cmd_vel.angular.z = 0.0
+            #         self.cmd_vel_pub.publish(self.cmd_vel) 
+
         except Exception as e:
             pass
 
