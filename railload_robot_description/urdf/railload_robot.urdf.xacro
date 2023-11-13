@@ -8,8 +8,8 @@
     <xacro:include filename="$(find railload_robot_description)/urdf/railload_robot_properties.urdf.xacro" />
     <xacro:include filename="$(find railload_robot_description)/urdf/robot/base.urdf.xacro" />
     <xacro:include filename="$(find railload_robot_description)/urdf/robot/wheel.urdf.xacro" />
+    <xacro:include filename="$(find railload_robot_description)/urdf/sensors/VLP-16.urdf.xacro"/>
     <!-- <xacro:include filename="$(find railload_robot_description)/urdf/robot/differential_drive.gazebo.xacro" />
-    <xacro:include filename="$(find railload_robot_description)/urdf/sensors/lidar.urdf.xacro" />
     <xacro:include filename="$(find railload_robot_description)/urdf/sensors/d435.urdf.xacro" /> -->
 
     <!-- Robot Base -->
@@ -22,9 +22,10 @@
     <!-- <xacro:differential_drive_controller/> -->
 
     <!-- Lidars (Plugin) -->
-    <!-- <xacro:lidar>
-        <xacro:insert_block name="lidar_pose" />
-    </xacro:lidar> -->
+    <xacro:VLP-16 parent="base_link" name="velodyne" topic="/velodyne_points" hz="10" samples="440" gpu="false">
+        <!-- <xacro:insert_block name="lidar_pose" /> -->
+        <origin xyz="0 0 0.2" rpy="0 0 0" />
+    </xacro:VLP-16>
 
     <!-- IntelRealsense D435 (Plugin) -->
     <!-- <xacro:sensor_d435 parent="base_link" name="camera" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">

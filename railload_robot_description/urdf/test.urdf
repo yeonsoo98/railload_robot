@@ -6,7 +6,6 @@
 <robot name="railload_robot">
   <!-- see https://secure.wikimedia.org/wikipedia/en/wiki/List_of_moment_of_inertia_tensors -->
   <!-- <xacro:include filename="$(find railload_robot_description)/urdf/robot/differential_drive.gazebo.xacro" />
-    <xacro:include filename="$(find railload_robot_description)/urdf/sensors/lidar.urdf.xacro" />
     <xacro:include filename="$(find railload_robot_description)/urdf/sensors/d435.urdf.xacro" /> -->
   <link name="base_footprint"/>
   <link name="base_link">
@@ -207,10 +206,103 @@
   </joint>
   <!-- Differential Drive Controller (Plugin) -->
   <!-- <xacro:differential_drive_controller/> -->
-  <!-- Lidars (Plugin) -->
-  <!-- <xacro:lidar>
-        <xacro:insert_block name="lidar_pose" />
-    </xacro:lidar> -->
+  <joint name="velodyne_base_mount_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0.2"/>
+    <parent link="base_link"/>
+    <child link="velodyne_base_link"/>
+  </joint>
+  <link name="velodyne_base_link">
+    <inertial>
+      <mass value="0.83"/>
+      <origin xyz="0 0 0.03585"/>
+      <inertia ixx="0.000908059425" ixy="0" ixz="0" iyy="0.000908059425" iyz="0" izz="0.0011049624"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://velodyne_description/meshes/VLP16_base_1.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <geometry>
+        <mesh filename="package://velodyne_description/meshes/VLP16_base_2.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0.03585"/>
+      <geometry>
+        <cylinder length="0.0717" radius="0.0516"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="velodyne_base_scan_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0.0377"/>
+    <parent link="velodyne_base_link"/>
+    <child link="velodyne"/>
+  </joint>
+  <link name="velodyne">
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1e-7" ixy="0" ixz="0" iyy="1e-7" iyz="0" izz="1e-7"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.0377"/>
+      <geometry>
+        <mesh filename="package://velodyne_description/meshes/VLP16_scan.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Gazebo requires the velodyne_gazebo_plugins package -->
+  <gazebo reference="velodyne">
+    <sensor name="velodyne-VLP16" type="ray">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>440</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.141592653589793</min_angle>
+            <max_angle>3.141592653589793</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>16</samples>
+            <resolution>1</resolution>
+            <min_angle>-0.2617993877991494</min_angle>
+            <max_angle> 0.2617993877991494</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.3</min>
+          <max>131.0</max>
+          <resolution>0.001</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.0</stddev>
+        </noise>
+      </ray>
+      <plugin filename="libgazebo_ros_velodyne_laser.so" name="gazebo_ros_laser_controller">
+        <ros>
+          <namespace>/velodyne</namespace>
+          <remapping>~/out:=/velodyne_points</remapping>
+        </ros>
+        <tf_prefix></tf_prefix>
+        <frame_name>velodyne</frame_name>
+        <organize_cloud>False</organize_cloud>
+        <min_range>0.9</min_range>
+        <max_range>130.0</max_range>
+        <gaussian_noise>0.008</gaussian_noise>
+      </plugin>
+    </sensor>
+  </gazebo>
   <!-- IntelRealsense D435 (Plugin) -->
   <!-- <xacro:sensor_d435 parent="base_link" name="camera" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
         <xacro:insert_block name="camera_pose" />
