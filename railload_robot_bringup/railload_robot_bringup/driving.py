@@ -118,7 +118,10 @@ class Driving(Node):
             elif msg.linear.x < 0.0:
                 self.instrument.serial.write(bytes(RPM_N0100))
             else:
-                self.instrument.serial.write(bytes(RPM_0))
+                self.instrument.serial.write(bytes(BREAK_ON))  # 먼저 BREAK_ON 명령을 보낸다
+                time.sleep(0.1)  # 잠시 기다린다
+                self.instrument.serial.write(bytes(BREAK_OFF))  # 다음으로 BREAK_OFF 명령을 보낸다
+                self.instrument.serial.write(bytes(RPM_0))      # 마지막으로 RPM을 0으로 설정한다
         except Exception as e:
             self.get_logger().error("Fail to write : {}".format(e))
 
