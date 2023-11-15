@@ -114,9 +114,9 @@ class Driving(Node):
     def cmd_vel_callback(self, msg):
         try:
             if msg.linear.x > 0.0:
-                self.instrument.serial.write(bytes(RPM_P0300))
+                self.instrument.serial.write(bytes(RPM_P0100))
             elif msg.linear.x < 0.0:
-                self.instrument.serial.write(bytes(RPM_N0300))
+                self.instrument.serial.write(bytes(RPM_N0100))
             else:
                 self.instrument.serial.write(bytes(RPM_0))
         except Exception as e:
