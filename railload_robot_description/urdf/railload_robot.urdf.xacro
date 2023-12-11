@@ -8,9 +8,9 @@
     <xacro:include filename="$(find railload_robot_description)/urdf/railload_robot_properties.urdf.xacro" />
     <xacro:include filename="$(find railload_robot_description)/urdf/robot/base.urdf.xacro" />
     <xacro:include filename="$(find railload_robot_description)/urdf/robot/wheel.urdf.xacro" />
-    <xacro:include filename="$(find railload_robot_description)/urdf/sensors/VLP-16.urdf.xacro"/>
-    <!-- <xacro:include filename="$(find railload_robot_description)/urdf/robot/differential_drive.gazebo.xacro" />
-    <xacro:include filename="$(find railload_robot_description)/urdf/sensors/d435.urdf.xacro" /> -->
+    <xacro:include filename="$(find railload_robot_description)/urdf/robot/differential_drive.gazebo.xacro" />
+    <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
+    <!-- <xacro:include filename="$(find railload_robot_description)/urdf/sensors/d435.urdf.xacro" /> -->
 
     <!-- Robot Base -->
     <xacro:base mass="${base_mass}"/>
@@ -19,12 +19,11 @@
     <xacro:wheel mass="${wheel_mass}"/>
 
     <!-- Differential Drive Controller (Plugin) -->
-    <!-- <xacro:differential_drive_controller/> -->
+    <xacro:differential_drive_controller/>
 
     <!-- Lidars (Plugin) -->
-    <xacro:VLP-16 parent="base_link" name="velodyne" topic="/velodyne_points" hz="10" samples="440" gpu="false">
-        <!-- <xacro:insert_block name="lidar_pose" /> -->
-        <origin xyz="0 0 0.2" rpy="0 0 0" />
+    <xacro:VLP-16 parent="base_link" name="velodyne" topic="/velodyne_points" hz="10" samples="440" gpu="true">
+        <xacro:insert_block name="lidar_pose" />
     </xacro:VLP-16>
 
     <!-- IntelRealsense D435 (Plugin) -->
