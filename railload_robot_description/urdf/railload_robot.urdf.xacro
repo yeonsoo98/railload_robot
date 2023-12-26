@@ -9,6 +9,7 @@
     <xacro:include filename="$(find railload_robot_description)/urdf/robot/base.urdf.xacro" />
     <xacro:include filename="$(find railload_robot_description)/urdf/robot/wheel.urdf.xacro" />
     <xacro:include filename="$(find railload_robot_description)/urdf/robot/differential_drive.gazebo.xacro" />
+    <xacro:include filename="$(find railload_robot_description)/urdf/robot/color.gazebo.xacro"/>
     <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
     <!-- <xacro:include filename="$(find railload_robot_description)/urdf/sensors/d435.urdf.xacro" /> -->
 
@@ -20,6 +21,9 @@
 
     <!-- Differential Drive Controller (Plugin) -->
     <xacro:differential_drive_controller/>
+
+    <!-- Gazebo Color -->
+    <xacro:gazebo_color/>
 
     <!-- Lidars (Plugin) -->
     <xacro:VLP-16 parent="base_link" name="velodyne" topic="/velodyne_points" hz="10" samples="440" gpu="true">

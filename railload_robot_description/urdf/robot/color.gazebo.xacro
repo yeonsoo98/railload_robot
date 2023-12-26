@@ -1,0 +1,38 @@
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="gazebo_color">
+        <!-- Wheels -->
+        <gazebo reference="wheel1">
+            <material>Gazebo/Black</material>
+        </gazebo>
+
+        <gazebo reference="wheel2">
+            <material>Gazebo/Black</material>
+        </gazebo>
+
+        <gazebo reference="wheel3">
+            <material>Gazebo/Black</material>
+        </gazebo>
+
+        <gazebo reference="wheel4">
+            <material>Gazebo/Black</material>
+        </gazebo>
+
+        <!-- Robot Body -->
+        <gazebo reference="base_link">
+            <material>Gazebo/Grey</material>
+        </gazebo>
+
+        <gazebo reference="lidar_pole">
+            <material>Gazebo/Black</material>
+        </gazebo>
+
+        <gazebo reference="front_body">
+            <material>Gazebo/Orange</material>
+        </gazebo>
+
+        <gazebo reference="rear_body">
+            <material>Gazebo/Orange</material>
+        </gazebo>
+
+    </xacro:macro>
+</robot>
