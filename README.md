@@ -1,5 +1,50 @@
 # Railload Robot
 
+- Railload Robot
+![image](https://github.com/yeonsoo98/railload_robot/assets/77741178/2e4c9d33-f0f7-4fb6-9630-87f6e2bd7863)
+
+- Railload Robot Configuration diagram
+![image](https://github.com/yeonsoo98/railload_robot/assets/77741178/8b5c6f9b-8a1c-41a9-9145-8ef78f15772a)
+
+
+
+![Screenshot from 2023-10-11 17-37-36](https://github.com/yeonsoo98/railload_robot/assets/77741178/47581042-4719-42b3-8b94-0f2d709ae6c7)
+
+
+![Screenshot from 2023-10-11 18-01-03](https://github.com/yeonsoo98/railload_robot/assets/77741178/2f7f5164-3e0e-4135-84a2-eea9a8b130f3)
+
+
+
+## 현재 진행 사항
+- Modbus (RS485) 통신 연결 < 모터드라이버 > - < 잿슨 오린 >
+  - driving.py
+    
+- Keyboard & Joystick 제어 가능
+  - keyboard_comand.py
+  - joystick_command.py
+    
+- Person Tracker
+  - tracker.py
+  - YOLOv5 기반의 사람 추종
+  - ( 1.5 m < Distance ) => Stop & ( 1.5 m > Distance ) => Go
+ 
+    
+- Simulation
+  - description 확인 가능
+  - body , wheel xacro file로 구성 진행중
+  - gazebo & rqt 
+
+## 향후 계획
+- 세부적인 rpm 설정하기 & 제어하기
+- Slam & Navigation
+- GPS 
+- 시뮬레이션 환경 구축하기
+
+## Railload Robot Tracker Driving 
+- https://github.com/yeonsoo98/railload_robot/issues/5
+
+## Railload Robot Safety Driving
+- https://github.com/yeonsoo98/railload_robot/issues/4
 
 ## Railload Robot Video 
 - https://github.com/yeonsoo98/railload_robot/issues/1 

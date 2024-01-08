@@ -7,6 +7,7 @@ Panels:
         - /Global Options1
         - /Status1
         - /TF1
+        - /PointCloud21
       Splitter Ratio: 0.5
     Tree Height: 1036
   - Class: rviz_common/Selection
@@ -75,7 +76,22 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        lidar_pole:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         rear_body:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        velodyne:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        velodyne_base_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -116,7 +132,15 @@ Visualization Manager:
           Value: true
         front_body:
           Value: true
+        lidar_pole:
+          Value: true
+        odom:
+          Value: true
         rear_body:
+          Value: true
+        velodyne:
+          Value: true
+        velodyne_base_link:
           Value: true
         wheel1:
           Value: true
@@ -139,12 +163,52 @@ Visualization Manager:
                 {}
               wheel2:
                 {}
+            lidar_pole:
+              {}
             rear_body:
               wheel3:
                 {}
               wheel4:
                 {}
+            velodyne_base_link:
+              velodyne:
+                {}
+        odom:
+          {}
       Update Interval: 0
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 2.343848466873169
+        Min Value: -1.02405846118927
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz_default_plugins/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: AxisColor
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 0
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Flat Squares
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /velodyne_points
+      Use Fixed Frame: true
+      Use rainbow: true
       Value: true
   Enabled: true
   Global Options:
@@ -189,25 +253,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 6.7005133628845215
+      Distance: 22.818256378173828
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.4270900785923004
-        Y: 0.04814273864030838
-        Z: 0.5589336156845093
+        X: 0.25869256258010864
+        Y: -0.9335283041000366
+        Z: 0.6622616052627563
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: -0.005202912725508213
+      Pitch: 0.609797477722168
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.2285733222961426
+      Yaw: 3.713576078414917
     Saved: ~
 Window Geometry:
   Displays:

@@ -20,6 +20,22 @@
             <xacro:box_inertial x="0.5" y="2.0" z="0.5" mass="5.0" />
         </link>
 
+        <link name="lidar_pole">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder radius="0.03" length="0.5"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder radius="0.03" length="0.5"/>
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial radius="0.03" length="0.5" mass="1.0" />
+        </link>
+
         <!-- Front Body -->
         <link name="front_body" >
             <visual>
@@ -73,6 +89,13 @@
             <parent link="base_footprint"/>
             <child link="base_link"/>
             <origin xyz="0 0 0.3285" rpy="0 0 0"/>
+        </joint>
+
+        <!-- Joint - base_link ~ lidar_pole -->
+        <joint name="base_link_to_lidar_pole" type="fixed">
+            <parent link="base_link"/>
+            <child link="lidar_pole"/>
+            <origin xyz="0 0 0.3" rpy="0 0 0"/>
         </joint>
 
     </xacro:macro>
