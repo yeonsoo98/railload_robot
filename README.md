@@ -21,13 +21,13 @@
 - Modbus (RS485) 통신 연결 ( 모터드라이버 < - > 잿슨 오린 )
   - driving.py (로봇의 통신을 담당하는 코드 - 로봇을 작동시킬시, 항상 켜져있어야 함)  
 ```
-ros2 launch railload_robot_bringup driving.py
+ros2 run railload_robot_bringup driving.py
 ```
     
 - Keyboard & Joystick 제어 기능
   - keyboard_comand.py (블루투스 및 USB로 연결된 키보드로 조종 가능)
 ```
-ros2 launch railload_robot_bringup keyboard_command.py
+ros2 run railload_robot_bringup keyboard_command.py
 ```
 
   * keyboard_command.py: motor_speed_control (해당 키를 누르면 해당 rpm 속도로 이동)
@@ -40,7 +40,7 @@ ros2 launch railload_robot_bringup keyboard_command.py
       
   - joystick_command.py (블루투스로 연결된 조이스틱으로 조종 가능)
 ```
-ros2 launch railload_robot_bringup joystick_command.py
+ros2 run railload_robot_bringup joystick_command.py
 ```
 
   * Joystick control
@@ -64,7 +64,7 @@ ros2 launch railload_robot_bringup yolo.launch.py
       
   - tracker.py
 ```
-ros2 launch railload_robot_bringup tracker.py
+ros2 run railload_robot_bringup tracker.py
 ```
 
   * Person Tracker
@@ -108,7 +108,7 @@ ros2 launch railload_robot_description gazebo.launch.py
 
   - Lidar.py (velodyne vlp-16 lidar 실행)
 ```
-ros2 launch railload_robot_description Lidar.py
+ros2 run railload_robot_description Lidar.py
 ```
 
 * Gazebo & Rviz2 실행
@@ -120,7 +120,7 @@ ros2 launch railload_robot_description Lidar.py
 ## 추가 기능
 - 세부적인 rpm 설정하기 & 제어하기
 ```
-ros2 launch railload_robot_description rpm_calculate.py
+ros2 run railload_robot_description rpm_calculate.py
 ```
 
 ## RailAMR 동영상 (다운로드 확인 가능)
