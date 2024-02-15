@@ -9,6 +9,8 @@
 
 - RailAMR
 <img src="https://github.com/yeonsoo98/railload_robot/assets/77741178/53797ddc-74d1-4ee8-af5d-0d1170f7198c" width="400" height="200">
+<img src = "https://github.com/yeonsoo98/railload_robot/assets/77741178/e7d4f5c8-321a-45f3-bdbc-fd2b6abbd9e2" width="400" height="200">
+
 
 - RailAMR System Architecture
 <img src="https://github.com/yeonsoo98/railload_robot/assets/77741178/31956012-cecc-4c6e-b4da-c2e6770159d0" width="400" height="200">
